@@ -15,6 +15,50 @@
     transition: all 1s;
   }
 </style>
+<script type="text/javascript">
+    function currentYPosition() {
+    // Firefox, Chrome, Opera, Safari
+    if (self.pageYOffset) return self.pageYOffset;
+    // Internet Explorer 6 - standards mode
+    if (document.documentElement && document.documentElement.scrollTop)
+        return document.documentElement.scrollTop;
+    // Internet Explorer 6, 7 and 8
+    if (document.body.scrollTop) return document.body.scrollTop;
+    return 0;
+}
+function elmYPosition(eID) {
+    var elm = document.getElementById(eID);
+    var y = elm.offsetTop;
+    var node = elm;
+    while (node.offsetParent && node.offsetParent != document.body) {
+        node = node.offsetParent;
+        y += node.offsetTop;
+    } return y;
+}
+function smoothScroll(eID) {
+    var startY = currentYPosition();
+    var stopY = elmYPosition(eID);
+    var distance = stopY > startY ? stopY - startY : startY - stopY;
+    if (distance < 100) {
+        scrollTo(0, stopY); return;
+    }
+    var speed = Math.round(distance / 100);
+    if (speed >= 20) speed = 20;
+    var step = Math.round(distance / 25);
+    var leapY = stopY > startY ? startY + step : startY - step;
+    var timer = 0;
+    if (stopY > startY) {
+        for ( var i=startY; i<stopY; i+=step ) {
+            setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+            leapY += step; if (leapY > stopY) leapY = stopY; timer++;
+        } return;
+    }
+    for ( var i=startY; i>stopY; i-=step ) {
+        setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+        leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
+    }
+}
+  </script>
  </head>
 <body>
   <div class="container" style="padding-top: 50px;">
@@ -27,8 +71,8 @@
   <!-- Right side -->
   <div class="level-left">
     <span style="font-size: 20px"><strong> HOME &nbsp;&nbsp;</strong></span>
-    <span style="font-size: 20px"><a href="#about"><strong>ABOUT</strong> &nbsp;&nbsp;</a></span>
-    <span style="font-size: 20px"><a href="#contactMe"><strong>CONTACT</strong></a></span>
+    <span style="font-size: 20px"><a onclick = "smoothScroll('about')" ><strong>ABOUT</strong> &nbsp;&nbsp;</a></span>
+    <span style="font-size: 20px"><a onclick = "smoothScroll('contactMe')"><strong>CONTACT</strong></a></span>
   </div>
 </div>
 </nav>
@@ -38,7 +82,7 @@
     <div style="padding-top: 50px">
     <center><h1 style="padding-bottom: 0px; font-weight: 700; font-size: 90px;"> Hi,I'm Priti.</h1></center>
     <center><div style=" font-size: 24px;font-weight: 600;padding-bottom: 150px">A Computer Science Sophomore</div></center>
-     <center class="beech" style="padding-bottom: 100px"><button onclick="window.location.href ='#about';" type="button" class="btn btn-default btn-lg animated" style="font-size: 30px;border-radius: 50%;height: 80px;width: 80px"><i class="fas fa-chevron-down"></i></button></center>
+     <center class="beech" style="padding-bottom: 100px"><button onclick = "smoothScroll('about')"; type="button" class="btn btn-default btn-lg animated" style="font-size: 30px;border-radius: 50%;height: 80px;width: 80px"><i class="fas fa-chevron-down"></i></button></center>
      <style type="text/css">
       button:hover{
         background-color: black;
@@ -69,12 +113,13 @@
     <div class="container" >
     <div>
      <center><span style="font-size: 1.5em;font-weight: 700;">SKILLS</span></center>
-      <span style="padding-left: 15px;font-size: 1.2em;"><strong>JavaScript</strong></span>
-      <progress class="progress is-info" value="45" max="100">45%</progress>
+     <span style="padding-left: 15px;font-size: 1.2em;"><strong>HTML</strong></span>
+      <progress class="progress is-primary" value="75" max="100">75%</progress>
       <span style="padding-left: 15px;font-size: 1.2em;"><strong>CSS</strong></span>
       <progress class="progress" value="60" max="100">60%</progress>
-      <span style="padding-left: 15px;font-size: 1.2em;"><strong>HTML</strong></span>
-      <progress class="progress is-primary" value="75" max="100">75%</progress>
+        <span style="padding-left: 15px;font-size: 1.2em;"><strong>JavaScript</strong></span>
+      <progress class="progress is-info" value="45" max="100">45%</progress>
+      
       <span style="padding-bottom: 40px"></span>
     </div>
   </section>
@@ -139,7 +184,7 @@
   <div class="container" style="background-color: black;color: #ffffff">
    <center> <div class="content has-text-centered">
    <p style="font-size:20px ">
-        Created by <a href="https://www.facebook.com/priti.shaw.564">Priti Shaw.</a>
+        Created by <a href="https://www.facebook.com/priti.shaw.564">Priti Shaw</a>
       </p>
     </div></center>
   </div>
